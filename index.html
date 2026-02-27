@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NicoSun Lab | 探索 · 记录 · 创造</title>
+    <meta name="description" content="独立创作者，热爱探索新事物，记录生活点滴，创造有趣的作品">
+    
+    <!-- Open Graph 社交分享标签 -->
+    <meta property="og:title" content="NicoSun Lab | 探索 · 记录 · 创造">
+    <meta property="og:description" content="独立创作者，热爱探索新事物，记录生活点滴，创造有趣的作品">
+    <meta property="og:type" content="website">
+    
+    <!-- 字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS 样式库 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP 动画库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Lenis 平滑滚动库 -->
+    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+    
+    <!-- Lucide 图标库 -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'Noto Sans SC', 'sans-serif'],
+                    },
+                    colors: {
+                        cream: '#FDF8F3',
+                        'deep-navy': '#1A1A2E',
+                        'soft-purple': '#4A4A68',
+                        coral: '#E85D75',
+                        'mint': '#A8EDEA',
+                        'peach': '#FECFEF',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 20s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        :root {
+            --cream: #FDF8F3;
+            --deep-navy: #1A1A2E;
+            --soft-purple: #4A4A68;
+            --coral: #E85D75;
+            --mint: #A8EDEA;
+            --peach: #FECFEF;
+            --bg-primary: #FDF8F3;
+            --bg-secondary: #ffffff;
+            --text-primary: #1A1A2E;
+            --text-secondary: #4A4A68;
+            --card-bg: #ffffff;
+            --border-color: rgba(26, 26, 46, 0.1);
+            --glass-bg: rgba(253, 248, 243, 0.8);
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --gradient-4: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --gradient-5: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            --gradient-6: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+        }
+        
+        [data-theme="dark"] {
+            --cream: #0D1117;
+            --deep-navy: #1A1A2E;
+            --soft-purple: #4A4A68;
+            --coral: #FF9A9E;
+            --mint: #A8EDEA;
+            --peach: #FECFEF;
+            --bg-primary: #0D1117;
+            --bg-secondary: #1A1A2E;
+            --text-primary: #E8E8E8;
+            --text-secondary: #A0A0A0;
+            --card-bg: #1A1A2E;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(13, 17, 23, 0.85);
+            --gradient-1: linear-gradient(135deg, #5a5a7a 0%, #6b6b8a 100%);
+            --gradient-2: linear-gradient(135deg, #c0c0c0 0%, #d0d0d0 100%);
+            --gradient-3: linear-gradient(135deg, #3a3a4a 0%, #4a4a5a 100%);
+            --gradient-4: linear-gradient(135deg, #8a8a9a 0%, #9a9a9a 100%);
+            --gradient-5: linear-gradient(135deg, #7a7a8a 0%, #8a8a9a 100%);
+            --gradient-6: linear-gradient(135deg, #c0a0a0 0%, #d0b0b0 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #FF9A9E, #FECFEF);
+            border-radius: 4px;
+        }
+        
+        /* Gradient Text */
+        .gradient-text {
+            background: var(--gradient-6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Glass Effect */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        
+        /* Particle Canvas */
+        #particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        /* Avatar Ring Animation */
+        .avatar-ring {
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #FF9A9E, #FECFEF, #A8EDEA, #FF9A9E);
+            animation: spin 8s linear infinite;
+            opacity: 0.6;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Link Underline Animation */
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #FF9A9E, #FECFEF);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        /* Card Hover Effects */
+        .bento-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .bento-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(26, 26, 46, 0.15);
+        }
+        
+        .bento-card:hover .card-image {
+            transform: scale(1.05);
+        }
+        
+        .card-image {
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Button Styles */
+        .btn-primary {
+            background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 154, 158, 0.4);
+        }
+        
+        /* Typewriter Cursor */
+        .typewriter-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1em;
+            background: linear-gradient(180deg, #FF9A9E, #FECFEF);
+            margin-left: 4px;
+            animation: blink 1s step-end infinite;
+        }
+        
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        
+        /* Scroll Reveal Animation Classes */
+        .reveal {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .reveal.active {
+            transform: translateY(0);
+        }
+        
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #FDF8F3 0%, #FECFEF 50%, #A8EDEA 100%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        
+        #loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        
+        .loading-text {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FF9A9E 0%, #E85D75 50%, #FF9A9E 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .loading-subtitle {
+            font-size: 1.2rem;
+            color: #4A4A68;
+            margin-top: 1rem;
+            letter-spacing: 0.3em;
+        }
+        
+        .loading-bar {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 154, 158, 0.2);
+            border-radius: 2px;
+            margin-top: 2rem;
+            overflow: hidden;
+        }
+        
+        .loading-progress {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #FF9A9E, #E85D75);
+            border-radius: 2px;
+            animation: loadingProgress 2s ease-out forwards;
+        }
+        
+        @keyframes loadingProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(0.98); }
+        }
+        
+        /* Form Input Focus */
+        .form-input {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .form-input:focus {
+            border-color: #FF9A9E;
+            box-shadow: 0 0 0 4px rgba(255, 154, 158, 0.1);
+            outline: none;
+        }
+        
+        /* Social Icon Hover */
+        .social-icon {
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            transform: translateY(-4px) scale(1.1);
+            color: #E85D75;
+        }
+        
+        /* Tag Styles */
+        .tag {
+            background: rgba(255, 154, 158, 0.1);
+            color: #E85D75;
+            transition: all 0.3s ease;
+        }
+        
+        .tag:hover {
+            background: rgba(255, 154, 158, 0.2);
+        }
+        
+        /* Video Card Play Button */
+        .play-button {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.3s ease;
+        }
+        
+        .video-card:hover .play-button {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        /* Article Timeline */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 8px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FF9A9E, #FECFEF);
+        }
+        
+        /* Construction Badge */
+        .construction-badge {
+            background: linear-gradient(135deg, #FFD89B 0%, #FF9A9E 100%);
+        }
+        
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 50px;
+            box-shadow: 0 10px 40px rgba(255, 154, 158, 0.4);
+            z-index: 9998;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        .toast-icon {
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #E85D75;
+        }
+        
+        /* 社交媒体链接悬停效果 */
+        .social-link-github:hover {
+            background-color: #24292f !important;
+            color: white !important;
+        }
+        
+        .social-link-github:hover h4,
+        .social-link-github:hover p {
+            color: white !important;
+        }
+        
+        .social-link-github:hover .w-12 {
+            background-color: white !important;
+            color: #24292f !important;
+        }
+        
+        .social-link-bilibili:hover {
+            background-color: #fb7299 !important;
+            color: white !important;
+        }
+        
+        .social-link-bilibili:hover h4,
+        .social-link-bilibili:hover p {
+            color: white !important;
+        }
+        
+        .social-link-bilibili:hover .w-12 {
+            background-color: white !important;
+            color: #fb7299 !important;
+        }
+        
+        .social-link-xiaohongshu:hover {
+            background-color: #ff2442 !important;
+            color: white !important;
+        }
+        
+        .social-link-xiaohongshu:hover h4,
+        .social-link-xiaohongshu:hover p {
+            color: white !important;
+        }
+        
+        .social-link-xiaohongshu:hover .w-12 {
+            background-color: white !important;
+            color: #ff2442 !important;
+        }
+        
+        /* ========================================
+           便当盒布局 (Bento Grid) - 作品展示
+           ======================================== */
+        
+        /* 便当盒容器 - 使用 CSS Grid 实现自适应紧凑布局 */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: minmax(160px, auto);
+            grid-auto-flow: dense;
+            gap: 20px;
+            padding: 20px 0;
+        }
+        
+        /* 响应式布局 */
+        @media (max-width: 1024px) {
+            .bento-grid {
+                grid-template-columns: repeat(3, 1fr);
+                grid-auto-rows: minmax(140px, auto);
+                gap: 16px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .bento-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-auto-rows: minmax(130px, auto);
+                gap: 12px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .bento-grid {
+                grid-template-columns: 1fr;
+                grid-auto-rows: minmax(120px, auto);
+                gap: 12px;
+            }
+        }
+        
+        /* 便当盒卡片基础样式 */
+        .bento-item {
+            background: var(--card-bg);
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(26, 26, 46, 0.08);
+            cursor: pointer;
+        }
+        
+        .bento-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(26, 26, 46, 0.15);
+            z-index: 10;
+        }
+        
+        /* 卡片尺寸变体 */
+        .bento-item--large {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+        
+        .bento-item--wide {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+        
+        .bento-item--tall {
+            grid-column: span 1;
+            grid-row: span 2;
+        }
+        
+        .bento-item--normal {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+        
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .bento-item--large,
+            .bento-item--wide {
+                grid-column: span 2;
+            }
+            
+            .bento-item--tall {
+                grid-row: span 1;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .bento-item--large,
+            .bento-item--wide,
+            .bento-item--tall,
+            .bento-item--normal {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+        }
+        
+        /* 卡片内容布局 */
+        .bento-item__image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .bento-item:hover .bento-item__image {
+            transform: scale(1.08);
+        }
+        
+        .bento-item__content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 24px;
+            background: linear-gradient(to top, var(--bg-primary) 0%, rgba(26, 26, 46, 0.9) 0%, rgba(26, 26, 46, 0.6) 50%, transparent 100%);
+            color: white;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+        
+        .bento-item:hover .bento-item__content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .bento-item__content--always-visible {
+            transform: translateY(0);
+            opacity: 1;
+            background: linear-gradient(to top, rgba(26, 26, 46, 0.85) 0%, rgba(26, 26, 46, 0.4) 60%, transparent 100%);
+        }
+        
+        /* 纯内容卡片（无图片） */
+        .bento-item--content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 24px;
+            background: var(--gradient-1);
+        }
+        
+        .bento-item--content.bento-item--gradient-1 {
+            background: var(--gradient-2);
+        }
+        
+        .bento-item--content.bento-item--gradient-2 {
+            background: var(--gradient-3);
+        }
+        
+        .bento-item--content.bento-item--gradient-3 {
+            background: var(--gradient-4);
+        }
+        
+        .bento-item--content.bento-item--gradient-4 {
+            background: var(--gradient-5);
+        }
+        
+        .bento-item--content.bento-item--gradient-5 {
+            background: var(--gradient-1);
+        }
+        
+        .bento-item--content.bento-item--gradient-6 {
+            background: var(--gradient-6);
+        }
+        
+        .bento-item--content h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: white;
+        }
+        
+        .bento-item--content p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            color: white;
+        }
+        
+        /* 标签样式 */
+        .bento-item__tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+        
+        .bento-item__tag {
+            padding: 4px 12px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: white;
+        }
+        
+        /* 状态标签 */
+        .bento-item__status {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 5;
+        }
+        
+        .bento-item__status--completed {
+            background: #10b981;
+            color: white;
+        }
+        
+        .bento-item__status--progress {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .bento-item__status--planned {
+            background: #6b7280;
+            color: white;
+        }
+        
+        /* 图标样式 */
+        .bento-item__icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+        
+        .bento-item__icon svg {
+            width: 24px;
+            height: 24px;
+            color: white;
+        }
+        
+        /* 添加更多按钮 */
+        .bento-item--add {
+            border: 2px dashed rgba(26, 26, 46, 0.2);
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #4A4A68;
+            transition: all 0.3s ease;
+        }
+        
+        .bento-item--add:hover {
+            border-color: #FF9A9E;
+            background: rgba(255, 154, 158, 0.05);
+            color: #E85D75;
+        }
+        
+        .bento-item--add svg {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 12px;
+            opacity: 0.6;
+        }
+        
+        /* 链接覆盖层 */
+        .bento-item__link {
+            position: absolute;
+            inset: 0;
+            z-index: 20;
+        }
+        
+        /* 项目统计信息 */
+        .bento-item__stats {
+            display: flex;
+            gap: 16px;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+        
+        .bento-item__stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        /* 小游戏卡片动画 */
+        .game-card-animated {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .game-preview-animation {
+            display: flex;
+            gap: 8px;
+            align-items: flex-end;
+            height: 60px;
+            padding-right: 20px;
+        }
+        
+        .game-dot {
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            animation: gameBounce 1.4s ease-in-out infinite;
+            opacity: 0.8;
+        }
+        
+        .game-dot:nth-child(1) {
+            animation-delay: 0s;
+        }
+        
+        .game-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .game-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes gameBounce {
+            0%, 100% {
+                transform: translateY(0);
+                opacity: 0.8;
+            }
+            50% {
+                transform: translateY(-30px);
+                opacity: 1;
+            }
+        }
+        
+        .game-icon {
+            animation: gameIconPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes gameIconPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+        
+        .game-card-animated:hover .game-dot {
+            animation-duration: 0.7s;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- 顶部提示消息 -->
+    <div id="toast" class="toast">
+        <div class="toast-icon">
+            <i data-lucide="check" class="w-4 h-4"></i>
+        </div>
+        <span>发送成功，感谢您的留言！</span>
+    </div>
+
+    <!-- 加载屏幕 -->
+    <div id="loading-screen">
+        <div class="loading-text">NicoSun Lab</div>
+        <div class="loading-subtitle">探索 · 记录 · 创造</div>
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+    </div>
+
+    <!-- 导航栏 -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="#" class="text-2xl font-bold gradient-text">NicoSun Lab</a>
+                
+                <!-- 桌面端导航 -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#hero" class="nav-link text-deep-navy hover:text-coral transition-colors">首页</a>
+                    <a href="#about" class="nav-link text-deep-navy hover:text-coral transition-colors">关于我</a>
+                    <a href="#creations" class="nav-link text-deep-navy hover:text-coral transition-colors">作品</a>
+                    <a href="#contact" class="nav-link text-deep-navy hover:text-coral transition-colors">联系</a>
+                </div>
+                
+                <!-- 主题切换按钮 -->
+                <button id="theme-toggle" class="hidden md:block btn-primary px-6 py-2.5 rounded-full text-white font-medium text-sm flex items-center gap-2">
+                    <i data-lucide="moon" class="w-4 h-4 theme-icon-light"></i>
+                    <i data-lucide="sun" class="w-4 h-4 theme-icon-dark hidden"></i>
+                    <span class="theme-text">深色模式</span>
+                </button>
+                
+                <!-- 移动端菜单按钮 -->
+                <button id="mobile-menu-btn" class="md:hidden p-2">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+        
+                <!-- 移动端菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden glass border-t border-gray-100">
+            <div class="px-6 py-4 space-y-3">
+                <a href="#hero" class="block py-2 text-deep-navy hover:text-coral">首页</a>
+                <a href="#about" class="block py-2 text-deep-navy hover:text-coral">关于我</a>
+                <a href="#creations" class="block py-2 text-deep-navy hover:text-coral">作品</a>
+                <a href="#contact" class="block py-2 text-deep-navy hover:text-coral">联系</a>
+                <!-- 移动端主题切换按钮 -->
+                <button id="mobile-theme-toggle" class="w-full py-2 px-4 rounded-xl border-2 border-deep-navy/20 text-deep-navy font-medium hover:border-coral hover:text-coral transition-all flex items-center justify-center gap-2">
+                    <i data-lucide="moon" class="w-4 h-4 theme-icon-light"></i>
+                    <i data-lucide="sun" class="w-4 h-4 theme-icon-dark hidden"></i>
+                    <span class="theme-text">深色模式</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 首页英雄区 -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        <canvas id="particle-canvas"></canvas>
+        
+        <!-- 浮动装饰元素 -->
+        <div class="absolute top-1/4 left-10 w-20 h-20 rounded-full bg-gradient-to-br from-peach/30 to-mint/30 blur-xl animate-float"></div>
+        <div class="absolute bottom-1/4 right-10 w-32 h-32 rounded-full bg-gradient-to-br from-mint/20 to-peach/20 blur-2xl animate-float" style="animation-delay: -3s;"></div>
+        <div class="absolute top-1/2 left-1/4 w-16 h-16 rounded-full bg-gradient-to-br from-coral/20 to-peach/20 blur-lg animate-float" style="animation-delay: -1.5s;"></div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-20">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- 左侧内容 -->
+                <div class="text-center lg:text-left">
+                    <div class="hero-content">
+                        <p class="text-soft-purple text-lg mb-4 reveal">你好，欢迎来到</p>
+                        <h1 class="text-5xl md:text-7xl font-bold mb-6">
+                            <span class="gradient-text reveal">NicoSun Lab</span>
+                        </h1>
+                        <div class="h-16 mb-6">
+                            <p class="text-xl md:text-2xl text-soft-purple reveal">
+                                <span id="typewriter-text"></span><span class="typewriter-cursor"></span>
+                            </p>
+                        </div>
+                        <p class="text-lg text-soft-purple/80 mb-8 max-w-lg mx-auto lg:mx-0 reveal">
+                            独立创作者 | 探索者 | 记录者<br>
+                            在探索中发现，在记录中成长，在创造中表达<br>
+                            <span class="text-coral font-medium">探索 · 记录 · 创造</span>
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start reveal">
+                            <a href="#about" class="btn-primary px-8 py-3 rounded-full text-white font-medium inline-flex items-center justify-center gap-2">
+                                了解更多
+                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </a>
+                            <a href="#creations" class="px-8 py-3 rounded-full border-2 border-deep-navy/20 text-deep-navy font-medium hover:border-coral hover:text-coral transition-all inline-flex items-center justify-center gap-2">
+                                查看作品
+                                <i data-lucide="code-2" class="w-4 h-4"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 右侧头像 -->
+                <div class="flex justify-center lg:justify-end reveal">
+                    <div class="relative">
+                        <div class="avatar-ring"></div>
+                        <div class="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white shadow-2xl">
+                            <img src="images/avatar.png" 
+                                 alt="Avatar" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                        <!-- 浮动徽章 -->
+                        <div class="absolute -top-4 -right-4 bg-white rounded-2xl px-4 py-2 shadow-lg animate-float">
+                            <span class="text-sm font-medium text-deep-navy">身份</span>
+                            <span class="block text-2xl font-bold gradient-text">在校大学生</span>
+                        </div>
+                        <div class="absolute -bottom-4 -left-4 bg-white rounded-2xl px-4 py-2 shadow-lg animate-float" style="animation-delay: -2s;">
+                            <span class="text-sm font-medium text-deep-navy">状态</span>
+                            <span class="block text-lg font-bold text-coral">探索中</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 滚动指示器 -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i data-lucide="chevron-down" class="w-6 h-6 text-soft-purple/50"></i>
+        </div>
+    </section>
+
+    <!-- 关于我区域 -->
+    <section id="about" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="reveal">
+                    <span class="tag px-4 py-1.5 rounded-full text-sm font-medium">关于我</span>
+            <h2 class="text-4xl md:text-5xl font-bold mt-6 mb-6">
+                 在探索中<br>
+                    <span class="gradient-text" style="margin-top: 0.15em; display: inline-block;">发现无限可能</span>
+                    </h2>
+                    <p class="text-soft-purple/80 text-lg leading-relaxed mb-6">
+                        作为一名充满好奇心的大学生，我始终以热忱奔赴未知，从前沿新技术到多元新思想，每一次探索都成为我成长路上的印记，也让我坚信，世界处处藏着待发掘的宝藏。我习惯用文字、影像与代码，定格生活里转瞬即逝的灵感，更乐于将脑海中的奇思妙想落地，无论是一款实用小工具、一篇走心文章，还是一段鲜活视频，<strong>都是我与世界对话、实现自我表达的方式</strong>。
+                    </p>
+                    
+                    <!-- 技能标签 -->
+                    <div class="flex flex-wrap gap-3">
+                        <span class="tag px-4 py-2 rounded-full text-sm">探索学习</span>
+                        <span class="tag px-4 py-2 rounded-full text-sm">内容创作</span>
+                        <span class="tag px-4 py-2 rounded-full text-sm">前端开发</span>
+                        <span class="tag px-4 py-2 rounded-full text-sm">视频制作</span>
+                        <span class="tag px-4 py-2 rounded-full text-sm">摄影记录</span>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 reveal">
+                    <div class="space-y-4">
+                        <div class="bg-white rounded-3xl p-6 shadow-lg bento-card">
+                            <i data-lucide="compass" class="w-8 h-8 text-coral mb-4"></i>
+                            <h3 class="text-3xl font-bold mb-2">∞</h3>
+                            <p class="text-soft-purple/70">探索领域</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-peach/30 to-mint/30 rounded-3xl p-6 bento-card">
+                            <i data-lucide="video" class="w-8 h-8 text-coral mb-4"></i>
+                            <h3 class="text-3xl font-bold mb-2">10+</h3>
+                            <p class="text-soft-purple/70">视频作品</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4 pt-8">
+                        <div class="bg-gradient-to-br from-mint/30 to-peach/30 rounded-3xl p-6 bento-card">
+                            <i data-lucide="file-text" class="w-8 h-8 text-coral mb-4"></i>
+                            <h3 class="text-3xl font-bold mb-2">20+</h3>
+                            <p class="text-soft-purple/70">记录文章</p>
+                        </div>
+                        <div class="bg-white rounded-3xl p-6 shadow-lg bento-card">
+                            <i data-lucide="code" class="w-8 h-8 text-coral mb-4"></i>
+                            <h3 class="text-3xl font-bold mb-2">15+</h3>
+                            <p class="text-soft-purple/70">创造项目</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 作品展示区域 -->
+    <section id="creations" class="py-16 bg-white/50">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <span class="tag px-4 py-1.5 rounded-full text-sm font-medium">作品展示</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-6 mb-4">
+                    <span class="gradient-text">作品展示</span>
+                </h2>
+                <p class="text-soft-purple/70 text-lg max-w-2xl mx-auto">
+                    为了让生活与学习多一分简单与趣味，常和 AI 交流碰撞灵感，在对话中创造出实用的代码片段与创意边角料，用技术和巧思为日常增添乐趣。
+                </p>
+            </div>
+            
+            <!-- 便当盒布局 (Bento Grid) -->
+            <div class="bento-grid">
+                <!-- 大卡片 - 今天吃什么 -->
+                <div class="bento-item bento-item--large reveal">
+                    <span class="bento-item__status bento-item__status--completed">已完成</span>
+                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&h=600&fit=crop" 
+                         alt="今天吃什么" 
+                         class="bento-item__image">
+                    <div class="bento-item__content bento-item__content--always-visible">
+                        <div class="bento-item__tags">
+                            <span class="bento-item__tag">Web App</span>
+                            <span class="bento-item__tag">LBS</span>
+                        </div>
+                        <h3>今天吃什么</h3>
+                        <p>基于地理位置自动获取周边餐厅并随机抽取「盲盒」餐厅，解决选择困难症的终极方案。</p>
+                        <div class="bento-item__stats">
+                            <span class="bento-item__stat">
+                                <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                定位
+                            </span>
+                            <span class="bento-item__stat">
+                                <i data-lucide="shuffle" class="w-4 h-4"></i>
+                                随机
+                            </span>
+                        </div>
+                    </div>
+                    <a href="eat-what/index.html" class="bento-item__link" aria-label="查看项目"></a>
+                </div>
+                
+                <!-- 宽卡片 - 项目 2 -->
+                <div class="bento-item bento-item--wide bento-item--content bento-item--gradient-1 reveal">
+                    <div>
+                        <div class="bento-item__icon">
+                            <i data-lucide="bot" class="w-6 h-6"></i>
+                        </div>
+                        <span class="bento-item__status bento-item__status--progress" style="position: static; display: inline-block; margin-bottom: 12px;">开发中</span>
+                        <h3>AI 助手</h3>
+                        <p>基于大语言模型的智能对话助手，支持多轮对话和上下文理解。</p>
+                    </div>
+                    <a href="#" class="bento-item__link" aria-label="查看项目"></a>
+                </div>
+                
+                <!-- 高卡片 - 项目 3 -->
+                <div class="bento-item bento-item--tall reveal">
+                    <span class="bento-item__status bento-item__status--planned">规划中</span>
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=600&fit=crop" 
+                         alt="创意项目" 
+                         class="bento-item__image">
+                    <div class="bento-item__content">
+                        <div class="bento-item__tags">
+                            <span class="bento-item__tag">设计</span>
+                        </div>
+                        <h3>实用网站推荐</h3>
+                        <p>分享日常使用的实用网站导航</p>
+                    </div>
+                    <a href="favorites/index.html" class="bento-item__link" aria-label="查看项目"></a>
+                </div>
+                
+                <!-- 普通卡片 - 项目 4 -->
+                <div class="bento-item bento-item--normal bento-item--content bento-item--gradient-2 reveal">
+                    <div class="bento-item__icon">
+                        <i data-lucide="code-2" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3>代码片段库</h3>
+                        <p>常用代码收藏</p>
+                    </div>
+                    <a href="#" class="bento-item__link" aria-label="查看项目"></a>
+                </div>
+                
+                <!-- 普通卡片 - 摄影集 -->
+                <div class="bento-item bento-item--normal bento-item--content bento-item--gradient-3 reveal">
+                    <div class="bento-item__icon">
+                        <i data-lucide="camera" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3>摄影集</h3>
+                        <p>记录美好瞬间</p>
+                    </div>
+                    <a href="photography.html" class="bento-item__link" aria-label="查看摄影集"></a>
+                </div>
+                
+                <!-- 宽卡片 - 小游戏 -->
+                <div class="bento-item bento-item--wide bento-item--content bento-item--gradient-6 reveal game-card-animated">
+                    <div class="flex items-center justify-between w-full">
+                        <div>
+                            <div class="bento-item__icon">
+                                <i data-lucide="gamepad-2" class="w-6 h-6 game-icon"></i>
+                            </div>
+                            <span class="bento-item__status bento-item__status--completed" style="position: static; display: inline-block; margin-bottom: 8px;">可玩</span>
+                            <h3>小游戏</h3>
+                            <p>轻松一刻，挑战你的反应力</p>
+                        </div>
+                        <div class="game-preview-animation">
+                            <div class="game-dot"></div>
+                            <div class="game-dot"></div>
+                            <div class="game-dot"></div>
+                        </div>
+                    </div>
+                    <a href="games.html" class="bento-item__link" aria-label="玩游戏"></a>
+                </div>
+                
+                <!-- 宽卡片 - 项目 6 -->
+                <div class="bento-item bento-item--wide reveal">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop" 
+                         alt="数据分析" 
+                         class="bento-item__image">
+                    <div class="bento-item__content">
+                        <div class="bento-item__tags">
+                            <span class="bento-item__tag">数据</span>
+                            <span class="bento-item__tag">可视化</span>
+                        </div>
+                        <h3>数据可视化平台</h3>
+                        <p>实时数据监控与分析</p>
+                    </div>
+                    <a href="#" class="bento-item__link" aria-label="查看项目"></a>
+                </div>
+                
+                <!-- 普通卡片 - 项目 7 -->
+                <div class="bento-item bento-item--normal bento-item--content bento-item--gradient-4 reveal">
+                    <div class="bento-item__icon">
+                        <i data-lucide="music" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3>音乐播放器</h3>
+                        <p>极简音乐体验</p>
+                    </div>
+                    <a href="#" class="bento-item__link" aria-label="查看项目"></a>
+                </div>
+                
+                <!-- 普通卡片 - 项目 8 -->
+                <div class="bento-item bento-item--normal bento-item--content bento-item--gradient-5 reveal">
+                    <div class="bento-item__icon">
+                        <i data-lucide="book-open" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3>读书笔记</h3>
+                        <p>知识管理工具</p>
+                    </div>
+                    <a href="#" class="bento-item__link" aria-label="查看项目"></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系区域 -->
+    <section id="contact" class="py-24">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <span class="tag px-4 py-1.5 rounded-full text-sm font-medium">联系我</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-6 mb-4">
+                    <span class="gradient-text">联系我</span>
+                </h2>
+                <p class="text-soft-purple/70 text-lg max-w-2xl mx-auto">
+                    有项目想法？想要合作？或者只是想聊聊天？随时欢迎联系我！
+                </p>
+            </div>
+            
+            <div class="max-w-2xl mx-auto">
+                <!-- 联系表单 -->
+                <div class="reveal">
+                    <form action="https://formspree.io/f/mbdajzrj" method="POST" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">姓名</label>
+                                <input type="text" name="name" required 
+                                       class="form-input w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:border-coral"
+                                       placeholder="您的名字">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">邮箱</label>
+                                <input type="email" name="email" required 
+                                       class="form-input w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:border-coral"
+                                       placeholder="your@email.com">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">主题</label>
+                            <input type="text" name="subject" required 
+                                   class="form-input w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:border-coral"
+                                   placeholder="消息主题">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">消息内容</label>
+                            <textarea name="message" rows="5" required 
+                                      class="form-input w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:border-coral resize-none"
+                                      placeholder="想对我说什么..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary w-full py-4 rounded-xl text-white font-medium flex items-center justify-center gap-2">
+                            发送消息
+                            <i data-lucide="send" class="w-4 h-4"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="py-12 bg-deep-navy text-white">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="text-center md:text-left">
+                    <h3 class="text-2xl font-bold gradient-text mb-2">NicoSun Lab</h3>
+                    <p class="text-white/60 text-sm">探索 · 记录 · 创造</p>
+                </div>
+                
+                <div class="flex items-center gap-6">
+                    <a href="https://github.com" target="_blank" class="social-icon text-white/60 hover:text-white">
+                        <i data-lucide="github" class="w-5 h-5"></i>
+                    </a>
+                    <a href="https://bilibili.com" target="_blank" class="social-icon text-white/60 hover:text-white">
+                        <i data-lucide="tv" class="w-5 h-5"></i>
+                    </a>
+                    <a href="https://xiaohongshu.com" target="_blank" class="social-icon text-white/60 hover:text-white">
+                        <i data-lucide="book-open" class="w-5 h-5"></i>
+                    </a>
+                    <a href="mailto:contact@example.com" class="social-icon text-white/60 hover:text-white">
+                        <i data-lucide="mail" class="w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/10 mt-8 pt-8 text-center">
+                <p class="text-white/40 text-sm">
+                    &copy; 2026 NicoSun Lab. All rights reserved. | 
+                    <a href="#" class="hover:text-white transition-colors">电子好友</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript 脚本 -->
+    <script>
+        // 加载屏幕
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const loadingScreen = document.getElementById('loading-screen');
+                loadingScreen.classList.add('hidden');
+            }, 2000);
+        });
+        
+        // 主题切换功能
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcons(savedTheme);
+        }
+        
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcons(newTheme);
+        }
+        
+        function updateThemeIcons(theme) {
+            const lightIcon = document.querySelector('.theme-icon-light');
+            const darkIcon = document.querySelector('.theme-icon-dark');
+            const themeText = document.querySelector('.theme-text');
+            
+            if (theme === 'dark') {
+                lightIcon.classList.add('hidden');
+                darkIcon.classList.remove('hidden');
+                themeText.textContent = '浅色模式';
+            } else {
+                lightIcon.classList.remove('hidden');
+                darkIcon.classList.add('hidden');
+                themeText.textContent = '深色模式';
+            }
+        }
+        
+        // 初始化主题
+        initTheme();
+        
+        // 绑定主题切换按钮事件
+        document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+        document.getElementById('mobile-theme-toggle').addEventListener('click', toggleTheme);
+        
+        // 初始化 Lucide 图标
+        lucide.createIcons();
+        
+        // 原生平滑滚动（比 Lenis 更轻量）
+        document.documentElement.style.scrollBehavior = 'smooth';
+        
+        // 导航栏滚动效果
+        const navbar = document.getElementById('navbar');
+        let lastScroll = 0;
+        
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                navbar.classList.add('glass', 'shadow-sm');
+            } else {
+                navbar.classList.remove('glass', 'shadow-sm');
+            }
+            
+            lastScroll = currentScroll;
+        }, { passive: true });
+        
+        // 移动端菜单切换
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // 打字机效果
+        const typewriterText = document.getElementById('typewriter-text');
+        const phrases = [
+            '探索者',
+            '记录者',
+            '创造者',
+            '大学生'
+        ];
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let typingSpeed = 100;
+        
+        function typeWriter() {
+            const currentPhrase = phrases[phraseIndex];
+            
+            if (isDeleting) {
+                typewriterText.textContent = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+                typingSpeed = 50;
+            } else {
+                typewriterText.textContent = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+                typingSpeed = 100;
+            }
+            
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                isDeleting = true;
+                typingSpeed = 2000; // 结束时暂停
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                typingSpeed = 500; // 打字前暂停
+            }
+            
+            setTimeout(typeWriter, typingSpeed);
+        }
+        
+        // 初始加载后开始打字机效果
+        setTimeout(typeWriter, 1000);
+        
+        // 粒子背景 - 性能优化
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let animationId;
+        let isActive = true;
+        let frameCount = 0;
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.3;
+                this.color = `rgba(255, 154, 158, ${0.2 + Math.random() * 0.2})`;
+            }
+            
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        
+        function initParticles() {
+            particles = [];
+            // 减少粒子数量以提高性能
+            const particleCount = window.innerWidth < 768 ? 8 : 15;
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+        
+        function connectParticles() {
+            const maxDistance = 100;
+            const maxConnections = 2;
+            
+            for (let i = 0; i < particles.length; i++) {
+                let connections = 0;
+                for (let j = i + 1; j < particles.length; j++) {
+                    if (connections >= maxConnections) break;
+                    
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = dx * dx + dy * dy;
+                    
+                    if (distance < maxDistance * maxDistance) {
+                        const opacity = 0.1 * (1 - Math.sqrt(distance) / maxDistance);
+                        ctx.strokeStyle = `rgba(255, 154, 158, ${opacity})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                        connections++;
+                    }
+                }
+            }
+        }
+        
+        function animateParticles() {
+            if (!isActive) return;
+            
+            // 每2帧渲染一次以达到30fps（更好的性能）
+            frameCount++;
+            if (frameCount % 2 !== 0) {
+                animationId = requestAnimationFrame(animateParticles);
+                return;
+            }
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            connectParticles();
+            animationId = requestAnimationFrame(animateParticles);
+        }
+        
+        // 初始化粒子
+        resizeCanvas();
+        initParticles();
+        animateParticles();
+        
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            initParticles();
+        });
+        
+        // 当标签页隐藏时暂停粒子动画
+        document.addEventListener('visibilitychange', () => {
+            isActive = document.visibilityState === 'visible';
+            if (isActive) {
+                animateParticles();
+            } else {
+                cancelAnimationFrame(animationId);
+            }
+        });
+        
+        // GSAP ScrollTrigger 动画
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Hero 内容动画
+        gsap.from('.hero-content > *', {
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.2,
+            ease: 'power3.out',
+            delay: 0.5
+        });
+        
+        // 区域渐显动画
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        // 使用 Intersection Observer 作为备用的滚动显示方案
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+            
+            revealElements.forEach(element => {
+                observer.observe(element);
+            });
+        } else {
+            // 如果不支持 IntersectionObserver，直接显示所有元素
+            revealElements.forEach(element => {
+                element.classList.add('active');
+            });
+        }
+        
+        // GSAP 动画（可选，作为增强效果）
+        try {
+            revealElements.forEach((element, index) => {
+                gsap.fromTo(element, 
+                    {
+                        y: 30,
+                        opacity: 0
+                    },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        duration: 0.8,
+                        ease: 'power3.out',
+                        scrollTrigger: {
+                            trigger: element,
+                            start: 'top 85%',
+                            toggleActions: 'play none none none'
+                        },
+                        delay: index % 3 * 0.1
+                    }
+                );
+            });
+        } catch (e) {
+            console.log('GSAP动画跳过:', e.message);
+        }
+        
+        // Bento 卡片交错动画
+        try {
+            gsap.from('.bento-card', {
+                y: 40,
+                opacity: 0,
+                duration: 0.6,
+                stagger: 0.1,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '#creations',
+                    start: 'top 70%'
+                }
+            });
+        } catch (e) {
+            console.log('Bento卡片动画跳过:', e.message);
+        }
+        
+        // 锚点链接平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                
+                if (href === '#') {
+                    e.preventDefault();
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                    return;
+                }
+                
+                const target = document.querySelector(href);
+                if (target) {
+                    e.preventDefault();
+                    const navbarHeight = 80;
+                    const offsetTop = target.offsetTop - navbarHeight;
+                    
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                    
+                    // 关闭移动端菜单
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+        
+        // 表单提交处理
+        const form = document.querySelector('form');
+        const toast = document.getElementById('toast');
+        
+        // 显示提示消息函数
+        function showToast(message) {
+            const toastText = toast.querySelector('span');
+            toastText.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const button = this.querySelector('button[type="submit"]');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> 发送中...';
+            button.disabled = true;
+            lucide.createIcons();
+            
+            try {
+                const formData = new FormData(form);
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    showToast('发送成功，感谢您的留言！');
+                    form.reset();
+                } else {
+                    showToast('发送失败，请稍后重试');
+                }
+            } catch (error) {
+                showToast('发送失败，请稍后重试');
+            } finally {
+                button.innerHTML = originalText;
+                button.disabled = false;
+                lucide.createIcons();
+            }
+        });
+    </script>
+    
+    <!-- 编辑器样式和脚本 -->
+    <link rel="stylesheet" href="editor.css">
+    <script src="editor.js"></script>
+</body>
+</html>

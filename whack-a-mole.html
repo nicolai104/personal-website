@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>打地鼠 | NicoSun Lab - 反应力挑战</title>
+    <meta name="description" content="打地鼠游戏，考验你的反应速度和手眼协调">
+    
+    <!-- Open Graph 社交分享标签 -->
+    <meta property="og:title" content="打地鼠 | NicoSun Lab">
+    <meta property="og:description" content="快速点击地鼠，挑战反应极限">
+    <meta property="og:type" content="website">
+    
+    <!-- 字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS 样式库 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP 动画库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <!-- Lucide 图标库 -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'Noto Sans SC', 'sans-serif'],
+                    },
+                    colors: {
+                        cream: '#FDF8F3',
+                        'deep-navy': '#1A1A2E',
+                        'soft-purple': '#4A4A68',
+                        coral: '#E85D75',
+                        'mint': '#A8EDEA',
+                        'peach': '#FECFEF',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        :root {
+            --cream: #FDF8F3;
+            --deep-navy: #1A1A2E;
+            --soft-purple: #4A4A68;
+            --coral: #E85D75;
+            --mint: #A8EDEA;
+            --peach: #FECFEF;
+            --bg-primary: #FDF8F3;
+            --bg-secondary: #ffffff;
+            --text-primary: #1A1A2E;
+            --text-secondary: #4A4A68;
+            --card-bg: #ffffff;
+            --border-color: rgba(26, 26, 46, 0.1);
+            --glass-bg: rgba(253, 248, 243, 0.8);
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --gradient-4: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --gradient-5: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            --gradient-6: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+        }
+        
+        [data-theme="dark"] {
+            --cream: #0D1117;
+            --deep-navy: #1A1A2E;
+            --soft-purple: #4A4A68;
+            --coral: #FF9A9E;
+            --mint: #A8EDEA;
+            --peach: #FECFEF;
+            --bg-primary: #0D1117;
+            --bg-secondary: #1A1A2E;
+            --text-primary: #E8E8E8;
+            --text-secondary: #A0A0A0;
+            --card-bg: #1A1A2E;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(13, 17, 23, 0.85);
+            --gradient-1: linear-gradient(135deg, #5a5a7a 0%, #6b6b8a 100%);
+            --gradient-2: linear-gradient(135deg, #c0c0c0 0%, #d0d0d0 100%);
+            --gradient-3: linear-gradient(135deg, #3a3a4a 0%, #4a4a5a 100%);
+            --gradient-4: linear-gradient(135deg, #7a7a7a 0%, #9a9a9a 100%);
+            --gradient-5: linear-gradient(135deg, #8a8a8a 0%, #a8a8a8a 100%);
+            --gradient-6: linear-gradient(135deg, #a0a0a0 0%, #d0b0b0 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #FF9A9E, #FECFEF);
+            border-radius: 4px;
+        }
+        
+        /* Gradient Text */
+        .gradient-text {
+            background: var(--gradient-6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Glass Effect */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        
+        /* Back Button */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%);
+            color: white;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(255, 154, 158, 0.3);
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 154, 158, 0.4);
+        }
+        
+        /* Theme Toggle Button */
+        .theme-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%);
+            color: white;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 154, 158, 0.3);
+        }
+        
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 154, 158, 0.4);
+        }
+        
+        /* Game Container */
+        .game-wrapper {
+            background: var(--card-bg);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(26, 26, 46, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .game-wrapper {
+                padding: 24px;
+            }
+        }
+        
+        /* Game Info */
+        .game-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 16px 32px;
+            border-radius: 16px;
+            text-align: center;
+            min-width: 120px;
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--soft-purple);
+            margin-bottom: 4px;
+        }
+        
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--deep-navy);
+        }
+        
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+        
+        .game-btn {
+            padding: 14px 32px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+        }
+        
+        .game-btn-primary {
+            background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 154, 158, 0.3);
+        }
+        
+        .game-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 154, 158, 0.4);
+        }
+        
+        .game-btn-danger {
+            background: linear-gradient(135deg, #FECFEF 0%, #E85D75 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(232, 93, 117, 0.3);
+        }
+        
+        .game-btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(232, 93, 117, 0.4);
+        }
+        
+        .game-btn:disabled {
+            background: linear-gradient(135deg, #cccccc 0%, #e0e0e0 100%);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Difficulty Cards */
+        .difficulty-section {
+            margin-bottom: 30px;
+        }
+        
+        .difficulty-section h3 {
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--soft-purple);
+            margin-bottom: 15px;
+        }
+        
+        .difficulty-cards {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .difficulty-card {
+            padding: 20px 30px;
+            background: linear-gradient(135deg, rgba(255, 154, 158, 0.1) 0%, rgba(254, 207, 239, 0.1) 100%);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            border: 2px solid transparent;
+            min-width: 100px;
+        }
+        
+        .difficulty-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 154, 158, 0.2);
+            border-color: #FF9A9E;
+        }
+        
+        .difficulty-card.active {
+            background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 154, 158, 0.3);
+        }
+        
+        .difficulty-card h4 {
+            font-size: 1.1em;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .difficulty-card p {
+            font-size: 0.85em;
+            opacity: 0.8;
+        }
+        
+        /* Game Area */
+        .game-area {
+            display: grid;
+            gap: 15px;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.05) 0%, rgba(74, 74, 104, 0.05) 100%);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Hole */
+        .hole {
+            position: relative;
+            background: linear-gradient(135deg, #333 0%, #1A1A2E 100%);
+            border-radius: 50%;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 5px 15px rgba(0, 0, 0, 0.3);
+            aspect-ratio: 1;
+        }
+        
+        .hole:hover {
+            transform: scale(1.03);
+        }
+        
+        /* Mole */
+        .mole {
+            position: absolute;
+            bottom: -100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70%;
+            height: 70%;
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            border-radius: 50% 50% 0 0;
+            transition: bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .mole .ear-left,
+        .mole .ear-right {
+            position: absolute;
+            top: -10px;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            border-radius: 50%;
+        }
+        
+        .mole .ear-left {
+            left: 10%;
+        }
+        
+        .mole .ear-right {
+            right: 10%;
+        }
+        
+        .mole .eye-left,
+        .mole .eye-right {
+            position: absolute;
+            top: 30%;
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border-radius: 50%;
+        }
+        
+        .mole .eye-left {
+            left: 25%;
+        }
+        
+        .mole .eye-right {
+            right: 25%;
+        }
+        
+        .mole .nose {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 6px;
+            background-color: #FF9A9E;
+            border-radius: 3px;
+        }
+        
+        .mole.active {
+            bottom: 0;
+            animation: popUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes popUp {
+            0% {
+                bottom: -100%;
+                transform: translateX(-50%) scale(0.8);
+            }
+            80% {
+                bottom: 10%;
+                transform: translateX(-50%) scale(1.1);
+            }
+            100% {
+                bottom: 0;
+                transform: translateX(-50%) scale(1);
+            }
+        }
+        
+        .mole.hit {
+            background: linear-gradient(135deg, #E85D75 0%, #FF9A9E 100%);
+            animation: hit 0.3s ease;
+        }
+        
+        @keyframes hit {
+            0% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.2); }
+            100% { transform: translateX(-50%) scale(1); }
+        }
+        
+        /* Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Game Over Modal */
+        .game-over-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(26, 26, 46, 0.9);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+        
+        .game-over-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .game-over-content {
+            background: white;
+            padding: 50px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 400px;
+            transform: scale(0.8);
+            transition: transform 0.4s ease;
+        }
+        
+        .game-over-modal.active .game-over-content {
+            transform: scale(1);
+        }
+        
+        .game-over-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .game-info {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .difficulty-cards {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .difficulty-card {
+                width: 100%;
+                max-width: 200px;
+            }
+            
+            .game-area {
+                padding: 20px;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <a href="index.html" class="text-2xl font-bold gradient-text">NicoSun Lab</a>
+                <div class="flex items-center gap-4">
+                    <button id="theme-toggle" class="theme-toggle">
+                        <i data-lucide="moon" class="w-5 h-5 theme-icon-light"></i>
+                        <i data-lucide="sun" class="w-5 h-5 theme-icon-dark hidden"></i>
+                        <span class="theme-text">深色模式</span>
+                    </button>
+                    <a href="games.html" class="back-btn">
+                        <i data-lucide="gamepad-2" class="w-5 h-5"></i>
+                        游戏大厅
+                    </a>
+                    <a href="index.html" class="back-btn">
+                        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                        返回首页
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面标题区域 -->
+    <section class="pt-32 pb-16">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center reveal">
+                <span class="inline-block px-4 py-1.5 rounded-full text-sm font-medium bg-gradient-to-r from-amber-100 to-orange-100 text-amber-600 mb-6">
+                    Whack-a-Mole
+                </span>
+                <h1 class="text-4xl md:text-6xl font-bold mb-6">
+                    打地鼠 <span class="gradient-text">|</span> 反应力挑战
+                </h1>
+                <p class="text-soft-purple/70 text-lg max-w-2xl mx-auto">
+                    地鼠们从洞里钻出来了！快速点击它们，在时间内获得最高分！
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 游戏区域 -->
+    <section class="pb-24">
+        <div class="max-w-4xl mx-auto px-6 lg:px-8">
+            <div class="game-wrapper reveal">
+                <!-- 难度选择 -->
+                <div class="difficulty-section">
+                    <h3>选择难度</h3>
+                    <div class="difficulty-cards">
+                        <div class="difficulty-card active" data-difficulty="easy" data-rows="3" data-cols="3">
+                            <h4>简单</h4>
+                            <p>3 × 3</p>
+                        </div>
+                        <div class="difficulty-card" data-difficulty="normal" data-rows="4" data-cols="4">
+                            <h4>普通</h4>
+                            <p>4 × 4</p>
+                        </div>
+                        <div class="difficulty-card" data-difficulty="hard" data-rows="5" data-cols="5">
+                            <h4>困难</h4>
+                            <p>5 × 5</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 游戏信息 -->
+                <div class="game-info">
+                    <div class="stat-box">
+                        <div class="stat-label">分数</div>
+                        <div class="stat-value" id="score">0</div>
+                    </div>
+                    <div class="controls">
+                        <button class="game-btn game-btn-primary" id="start-btn">开始游戏</button>
+                        <button class="game-btn game-btn-danger" id="reset-btn">重置游戏</button>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">剩余时间</div>
+                        <div class="stat-value" id="time">60</div>
+                    </div>
+                </div>
+                
+                <!-- 游戏区域 -->
+                <div class="game-area" id="game-area">
+                    <!-- 地洞将通过 JavaScript 生成 -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 游戏结束弹窗 -->
+    <div class="game-over-modal" id="gameOverModal">
+        <div class="game-over-content">
+            <div class="game-over-icon">
+                <i data-lucide="trophy" class="w-12 h-12"></i>
+            </div>
+            <h2 class="text-2xl font-bold mb-2">游戏结束！</h2>
+            <p class="text-soft-purple mb-2">你的最终得分</p>
+            <p class="text-4xl font-bold gradient-text mb-2" id="finalScore">0</p>
+            <p class="text-soft-purple mb-6" id="difficultyText">难度：简单</p>
+            <button class="game-btn game-btn-primary" onclick="closeGameOverModal()">
+                再玩一次
+            </button>
+        </div>
+    </div>
+
+    <!-- 底部返回 -->
+    <section class="py-16 bg-white/50">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 text-center">
+            <a href="games.html" class="back-btn">
+                <i data-lucide="gamepad-2" class="w-5 h-5"></i>
+                返回游戏大厅
+            </a>
+        </div>
+    </section>
+
+    <script>
+        // 主题切换功能
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcons(savedTheme);
+        }
+        
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcons(newTheme);
+        }
+        
+        function updateThemeIcons(theme) {
+            const lightIcon = document.querySelector('.theme-icon-light');
+            const darkIcon = document.querySelector('.theme-icon-dark');
+            const themeText = document.querySelector('.theme-text');
+            
+            if (theme === 'dark') {
+                lightIcon.classList.add('hidden');
+                darkIcon.classList.remove('hidden');
+                themeText.textContent = '浅色模式';
+            } else {
+                lightIcon.classList.remove('hidden');
+                darkIcon.classList.add('hidden');
+                themeText.textContent = '深色模式';
+            }
+        }
+        
+        // 初始化主题
+        initTheme();
+        
+        // 绑定主题切换按钮事件
+        document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+        
+        // 初始化 Lucide 图标
+        lucide.createIcons();
+
+        // 滚动显示动画
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealOnScroll = () => {
+            revealElements.forEach((element, index) => {
+                setTimeout(() => {
+                    element.classList.add('active');
+                }, index * 100);
+            });
+        };
+
+        window.addEventListener('load', revealOnScroll);
+
+        // 游戏配置
+        let GAME_CONFIG = {
+            TIME_LIMIT: 60,
+            HOLES_COUNT: 9,
+            MOLE_SHOW_TIME: { min: 800, max: 1500 },
+            MOLE_INTERVAL: { min: 400, max: 1000 },
+            GRID_ROWS: 3,
+            GRID_COLS: 3,
+            DIFFICULTY_ADJUSTMENT: 0.9,
+            MIN_SHOW_TIME: 300,
+            MIN_INTERVAL_TIME: 200,
+            DIFFICULTY_THRESHOLD: 30
+        };
+
+        // 游戏状态
+        let gameState = {
+            score: 0,
+            timeLeft: GAME_CONFIG.TIME_LIMIT,
+            isRunning: false,
+            timer: null,
+            moleTimer: null,
+            currentDifficulty: 'easy'
+        };
+
+        // DOM 元素
+        let elements = {
+            scoreElement: null,
+            timeElement: null,
+            startBtn: null,
+            resetBtn: null,
+            gameArea: null,
+            holes: [],
+            difficultyCards: null
+        };
+
+        // 初始化游戏
+        function initGame() {
+            elements.scoreElement = document.getElementById('score');
+            elements.timeElement = document.getElementById('time');
+            elements.startBtn = document.getElementById('start-btn');
+            elements.resetBtn = document.getElementById('reset-btn');
+            elements.gameArea = document.getElementById('game-area');
+            elements.difficultyCards = document.querySelectorAll('.difficulty-card');
+
+            generateHoles();
+            bindEvents();
+            updateDisplay();
+        }
+
+        // 生成地洞
+        function generateHoles() {
+            elements.gameArea.innerHTML = '';
+            elements.holes = [];
+
+            elements.gameArea.style.gridTemplateColumns = `repeat(${GAME_CONFIG.GRID_COLS}, 1fr)`;
+            elements.gameArea.style.gridTemplateRows = `repeat(${GAME_CONFIG.GRID_ROWS}, 1fr)`;
+
+            for (let i = 0; i < GAME_CONFIG.HOLES_COUNT; i++) {
+                const hole = document.createElement('div');
+                hole.className = 'hole';
+
+                const mole = document.createElement('div');
+                mole.className = 'mole';
+                mole.innerHTML = `
+                    <div class="ear-left"></div>
+                    <div class="ear-right"></div>
+                    <div class="eye-left"></div>
+                    <div class="eye-right"></div>
+                    <div class="nose"></div>
+                `;
+
+                hole.appendChild(mole);
+                elements.gameArea.appendChild(hole);
+                elements.holes.push({ hole, mole });
+
+                hole.addEventListener('click', () => hitMole(mole));
+            }
+        }
+
+        // 绑定事件
+        function bindEvents() {
+            elements.startBtn.addEventListener('click', startGame);
+            elements.resetBtn.addEventListener('click', resetGame);
+
+            elements.difficultyCards.forEach(card => {
+                card.addEventListener('click', () => selectDifficulty(card));
+            });
+        }
+
+        // 选择难度
+        function selectDifficulty(card) {
+            if (gameState.isRunning) return;
+
+            elements.difficultyCards.forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+
+            const rows = parseInt(card.dataset.rows);
+            const cols = parseInt(card.dataset.cols);
+            const difficulty = card.dataset.difficulty;
+
+            GAME_CONFIG.GRID_ROWS = rows;
+            GAME_CONFIG.GRID_COLS = cols;
+            GAME_CONFIG.HOLES_COUNT = rows * cols;
+            gameState.currentDifficulty = difficulty;
+
+            generateHoles();
+        }
+
+        // 开始游戏
+        function startGame() {
+            if (gameState.isRunning) return;
+
+            gameState.isRunning = true;
+            elements.startBtn.disabled = true;
+
+            gameState.score = 0;
+            gameState.timeLeft = GAME_CONFIG.TIME_LIMIT;
+            updateDisplay();
+
+            startCountdown();
+            spawnMole();
+        }
+
+        // 倒计时
+        function startCountdown() {
+            gameState.timer = setInterval(() => {
+                gameState.timeLeft--;
+                updateDisplay();
+
+                if (gameState.timeLeft === GAME_CONFIG.DIFFICULTY_THRESHOLD) {
+                    increaseDifficulty();
+                }
+
+                if (gameState.timeLeft <= 0) {
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        // 增加难度
+        function increaseDifficulty() {
+            const adjustedShowTimeMin = Math.max(GAME_CONFIG.MIN_SHOW_TIME, Math.floor(GAME_CONFIG.MOLE_SHOW_TIME.min * GAME_CONFIG.DIFFICULTY_ADJUSTMENT));
+            const adjustedShowTimeMax = Math.max(GAME_CONFIG.MIN_SHOW_TIME, Math.floor(GAME_CONFIG.MOLE_SHOW_TIME.max * GAME_CONFIG.DIFFICULTY_ADJUSTMENT));
+            const adjustedIntervalMin = Math.max(GAME_CONFIG.MIN_INTERVAL_TIME, Math.floor(GAME_CONFIG.MOLE_INTERVAL.min * GAME_CONFIG.DIFFICULTY_ADJUSTMENT));
+            const adjustedIntervalMax = Math.max(GAME_CONFIG.MIN_INTERVAL_TIME, Math.floor(GAME_CONFIG.MOLE_INTERVAL.max * GAME_CONFIG.DIFFICULTY_ADJUSTMENT));
+
+            GAME_CONFIG.MOLE_SHOW_TIME = { min: adjustedShowTimeMin, max: adjustedShowTimeMax };
+            GAME_CONFIG.MOLE_INTERVAL = { min: adjustedIntervalMin, max: adjustedIntervalMax };
+        }
+
+        // 生成地鼠
+        function spawnMole() {
+            if (!gameState.isRunning) return;
+
+            const randomIndex = Math.floor(Math.random() * elements.holes.length);
+            const { mole } = elements.holes[randomIndex];
+
+            if (mole.classList.contains('active')) {
+                spawnMole();
+                return;
+            }
+
+            mole.classList.add('active');
+
+            const showTime = getRandomTime(GAME_CONFIG.MOLE_SHOW_TIME.min, GAME_CONFIG.MOLE_SHOW_TIME.max);
+            setTimeout(() => hideMole(mole), showTime);
+
+            const intervalTime = getRandomTime(GAME_CONFIG.MOLE_INTERVAL.min, GAME_CONFIG.MOLE_INTERVAL.max);
+            gameState.moleTimer = setTimeout(spawnMole, intervalTime);
+        }
+
+        // 隐藏地鼠
+        function hideMole(mole) {
+            mole.classList.remove('active', 'hit');
+        }
+
+        // 击中地鼠
+        function hitMole(mole) {
+            if (!gameState.isRunning || !mole.classList.contains('active')) return;
+
+            mole.classList.add('hit');
+            gameState.score++;
+            updateDisplay();
+
+            setTimeout(() => hideMole(mole), 200);
+        }
+
+        // 结束游戏
+        function endGame() {
+            gameState.isRunning = false;
+            clearInterval(gameState.timer);
+            clearTimeout(gameState.moleTimer);
+
+            elements.holes.forEach(({ mole }) => hideMole(mole));
+            elements.startBtn.disabled = false;
+
+            showGameOver();
+        }
+
+        // 显示游戏结束
+        function showGameOver() {
+            const difficultyNames = { easy: '简单', normal: '普通', hard: '困难' };
+            document.getElementById('finalScore').textContent = gameState.score;
+            document.getElementById('difficultyText').textContent = `难度：${difficultyNames[gameState.currentDifficulty]}`;
+            document.getElementById('gameOverModal').classList.add('active');
+        }
+
+        // 关闭游戏结束弹窗
+        function closeGameOverModal() {
+            document.getElementById('gameOverModal').classList.remove('active');
+            resetGame();
+        }
+
+        // 点击背景关闭弹窗
+        document.getElementById('gameOverModal').addEventListener('click', (e) => {
+            if (e.target.id === 'gameOverModal') {
+                closeGameOverModal();
+            }
+        });
+
+        // 重置游戏
+        function resetGame() {
+            gameState.isRunning = false;
+            clearInterval(gameState.timer);
+            clearTimeout(gameState.moleTimer);
+
+            gameState.score = 0;
+            gameState.timeLeft = GAME_CONFIG.TIME_LIMIT;
+
+            elements.holes.forEach(({ mole }) => hideMole(mole));
+            updateDisplay();
+            elements.startBtn.disabled = false;
+        }
+
+        // 更新显示
+        function updateDisplay() {
+            elements.scoreElement.textContent = gameState.score;
+            elements.timeElement.textContent = gameState.timeLeft;
+        }
+
+        // 获取随机时间
+        function getRandomTime(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // 初始化
+        initGame();
+    </script>
+</body>
+</html>
