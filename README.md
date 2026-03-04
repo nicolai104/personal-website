@@ -274,12 +274,10 @@ npx live-server personal-website/
 ## 联系方式
 
 如有问题或建议，欢迎通过以下方式联系：
-- GitHub: [你的GitHub]
-- 邮箱: [你的邮箱]
-- Bilibili: [你的B站账号]
+- 邮箱: nicosun@bupt.edu.cn
 
 ---
 
 **版本**: 1.0.0  
-**更新日期**: 2024年  
-**作者**: 西门美月匈XD
+**更新日期**: 2026年  
+**作者**: Nicolai104
