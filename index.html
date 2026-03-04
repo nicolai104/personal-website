@@ -105,6 +105,11 @@
             --gradient-6: linear-gradient(135deg, #c0a0a0 0%, #d0b0b0 100%);
         }
         
+        /* 作品展示区域深色模式背景 */
+        [data-theme="dark"] #creations {
+            background: linear-gradient(180deg, #0D1117 0%, #161B22 50%, #0D1117 100%);
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -907,19 +912,18 @@
                 <!-- 左侧内容 -->
                 <div class="text-center lg:text-left">
                     <div class="hero-content">
-                        <p class="text-soft-purple text-lg mb-4 reveal">你好，欢迎来到</p>
+                        <p class="text-soft-purple text-lg mb-6 reveal">你好，欢迎来到</p>
                         <h1 class="text-5xl md:text-7xl font-bold mb-6">
                             <span class="gradient-text reveal">NicoSun Lab</span>
                         </h1>
-                        <div class="h-16 mb-6">
+                        <div class="h-16 mb-0.75">
                             <p class="text-xl md:text-2xl text-soft-purple reveal">
                                 <span id="typewriter-text"></span><span class="typewriter-cursor"></span>
                             </p>
                         </div>
                         <p class="text-lg text-soft-purple/80 mb-8 max-w-lg mx-auto lg:mx-0 reveal">
-                            独立创作者 | 探索者 | 记录者<br>
-                            在探索中发现，在记录中成长，在创造中表达<br>
-                            <span class="text-coral font-medium">探索 · 记录 · 创造</span>
+                            <span class="text-coral font-medium">探索 · 记录 · 创造</span><br>
+                            在探索中发现，在记录中成长，在创造中表达
                         </p>
                         <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start reveal">
                             <a href="#about" class="btn-primary px-8 py-3 rounded-full text-white font-medium inline-flex items-center justify-center gap-2">
@@ -968,45 +972,42 @@
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <div class="grid lg:grid-cols-2 gap-16 items-center">
                 <div class="reveal">
-                    <span class="tag px-4 py-1.5 rounded-full text-sm font-medium">关于我</span>
-            <h2 class="text-4xl md:text-5xl font-bold mt-6 mb-6">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6">
                  在探索中<br>
                     <span class="gradient-text" style="margin-top: 0.15em; display: inline-block;">发现无限可能</span>
                     </h2>
-                    <p class="text-soft-purple/80 text-lg leading-relaxed mb-6">
-                        作为一名充满好奇心的大学生，我始终以热忱奔赴未知，从前沿新技术到多元新思想，每一次探索都成为我成长路上的印记，也让我坚信，世界处处藏着待发掘的宝藏。我习惯用文字、影像与代码，定格生活里转瞬即逝的灵感，更乐于将脑海中的奇思妙想落地，无论是一款实用小工具、一篇走心文章，还是一段鲜活视频，<strong>都是我与世界对话、实现自我表达的方式</strong>。
-                    </p>
+                    <p id="about-typewriter" class="text-soft-purple/80 text-lg leading-relaxed mb-6"></p>
                     
                     <!-- 技能标签 -->
                     <div class="flex flex-wrap gap-3">
                         <span class="tag px-4 py-2 rounded-full text-sm">探索学习</span>
                         <span class="tag px-4 py-2 rounded-full text-sm">内容创作</span>
-                        <span class="tag px-4 py-2 rounded-full text-sm">前端开发</span>
-                        <span class="tag px-4 py-2 rounded-full text-sm">视频制作</span>
+                        <span class="tag px-4 py-2 rounded-full text-sm">全栈开发</span>
+                        <span class="tag px-4 py-2 rounded-full text-sm">运动健身</span>
                         <span class="tag px-4 py-2 rounded-full text-sm">摄影记录</span>
                     </div>
                 </div>
                 
                 <div class="grid grid-cols-2 gap-4 reveal">
                     <div class="space-y-4">
-                        <div class="bg-white rounded-3xl p-6 shadow-lg bento-card">
+                        <div class="bg-white rounded-3xl p-6 shadow-lg bento-card reveal">
                             <i data-lucide="compass" class="w-8 h-8 text-coral mb-4"></i>
                             <h3 class="text-3xl font-bold mb-2">∞</h3>
                             <p class="text-soft-purple/70">探索领域</p>
                         </div>
-                        <div class="bg-gradient-to-br from-peach/30 to-mint/30 rounded-3xl p-6 bento-card">
+                        <div class="bg-gradient-to-br from-peach/30 to-mint/30 rounded-3xl p-6 bento-card reveal">
                             <i data-lucide="video" class="w-8 h-8 text-coral mb-4"></i>
                             <h3 class="text-3xl font-bold mb-2">10+</h3>
                             <p class="text-soft-purple/70">视频作品</p>
                         </div>
                     </div>
                     <div class="space-y-4 pt-8">
-                        <div class="bg-gradient-to-br from-mint/30 to-peach/30 rounded-3xl p-6 bento-card">
+                        <div class="bg-gradient-to-br from-mint/30 to-peach/30 rounded-3xl p-6 bento-card reveal">
                             <i data-lucide="file-text" class="w-8 h-8 text-coral mb-4"></i>
                             <h3 class="text-3xl font-bold mb-2">20+</h3>
                             <p class="text-soft-purple/70">记录文章</p>
                         </div>
-                        <div class="bg-white rounded-3xl p-6 shadow-lg bento-card">
+                        <div class="bg-white rounded-3xl p-6 shadow-lg bento-card reveal">
                             <i data-lucide="code" class="w-8 h-8 text-coral mb-4"></i>
                             <h3 class="text-3xl font-bold mb-2">15+</h3>
                             <p class="text-soft-purple/70">创造项目</p>
@@ -1018,11 +1019,10 @@
     </section>
 
     <!-- 作品展示区域 -->
-    <section id="creations" class="py-16 bg-white/50">
+    <section id="creations" class="py-16">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <div class="text-center mb-16 reveal">
-                <span class="tag px-4 py-1.5 rounded-full text-sm font-medium">作品展示</span>
-                <h2 class="text-4xl md:text-5xl font-bold mt-6 mb-4">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">
                     <span class="gradient-text">作品展示</span>
                 </h2>
                 <p class="text-soft-purple/70 text-lg max-w-2xl mx-auto">
@@ -1179,8 +1179,7 @@
     <section id="contact" class="py-24">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <div class="text-center mb-16 reveal">
-                <span class="tag px-4 py-1.5 rounded-full text-sm font-medium">联系我</span>
-                <h2 class="text-4xl md:text-5xl font-bold mt-6 mb-4">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">
                     <span class="gradient-text">联系我</span>
                 </h2>
                 <p class="text-soft-purple/70 text-lg max-w-2xl mx-auto">
@@ -1238,13 +1237,13 @@
                 </div>
                 
                 <div class="flex items-center gap-6">
-                    <a href="https://github.com" target="_blank" class="social-icon text-white/60 hover:text-white">
+                    <a href="https://github.com/nicolai104" target="_blank" class="social-icon text-white/60 hover:text-white">
                         <i data-lucide="github" class="w-5 h-5"></i>
                     </a>
-                    <a href="https://bilibili.com" target="_blank" class="social-icon text-white/60 hover:text-white">
+                    <a href="https://space.bilibili.com/490385711" target="_blank" class="social-icon text-white/60 hover:text-white">
                         <i data-lucide="tv" class="w-5 h-5"></i>
                     </a>
-                    <a href="https://xiaohongshu.com" target="_blank" class="social-icon text-white/60 hover:text-white">
+                    <a href="https://www.xiaohongshu.com/user/profile/62bc58f6000000001501bdf2" target="_blank" class="social-icon text-white/60 hover:text-white">
                         <i data-lucide="book-open" class="w-5 h-5"></i>
                     </a>
                     <a href="mailto:contact@example.com" class="social-icon text-white/60 hover:text-white">
@@ -1264,6 +1263,29 @@
 
     <!-- JavaScript 脚本 -->
     <script>
+        // 页面加载完成后初始化导航功能
+        document.addEventListener('DOMContentLoaded', function() {
+            // 为所有锚点链接添加点击事件
+            document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+                anchor.addEventListener('click', function(e) {
+                    var href = this.getAttribute('href');
+                    if (href && href !== '#') {
+                        e.preventDefault();
+                        var target = document.querySelector(href);
+                        if (target) {
+                            var navbar = document.getElementById('navbar');
+                            var navbarHeight = navbar ? navbar.offsetHeight : 80;
+                            var targetPosition = target.offsetTop - navbarHeight;
+                            window.scrollTo({
+                                top: targetPosition,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+        });
+        
         // 加载屏幕
         window.addEventListener('load', () => {
             setTimeout(() => {
@@ -1341,13 +1363,13 @@
             mobileMenu.classList.toggle('hidden');
         });
         
-        // 打字机效果
+        // 打字机效果 - 头部
         const typewriterText = document.getElementById('typewriter-text');
         const phrases = [
-            '探索者',
-            '记录者',
-            '创造者',
-            '大学生'
+            'BUPT大二在读',
+            'AI StartUP',
+            '中文HIPHOP重度爱好者',
+            '無限进步中⋯'
         ];
         let phraseIndex = 0;
         let charIndex = 0;
@@ -1381,6 +1403,38 @@
         
         // 初始加载后开始打字机效果
         setTimeout(typeWriter, 1000);
+        
+        // 打字机效果 - 关于我板块（滚动触发，一次性）
+        const aboutTypewriterElement = document.getElementById('about-typewriter');
+        const aboutFullText = '作为一名充满好奇心的大学生，我始终以热忱奔赴未知，从前沿新技术到多元新思想，每一次探索都成为我成长路上的印记，也让我坚信，世界处处藏着待发掘的宝藏。我习惯用文字、影像与代码，定格生活里转瞬即逝的灵感，更乐于将脑海中的奇思妙想落地，无论是一款实用小工具、一篇走心文章，还是一段鲜活视频，<strong>都是我与世界对话、实现自我表达的方式</strong>。';
+        let aboutTypingIndex = 0;
+        let aboutTypingDone = false;
+        
+        function typeAboutText() {
+            if (aboutTypingDone) return;
+            
+            if (aboutTypingIndex < aboutFullText.length) {
+                aboutTypewriterElement.innerHTML = aboutFullText.substring(0, aboutTypingIndex + 1);
+                aboutTypingIndex++;
+                setTimeout(typeAboutText, 30);
+            } else {
+                aboutTypingDone = true;
+            }
+        }
+        
+        // 使用 Intersection Observer 监听关于我板块
+        const aboutSection = document.getElementById('about');
+        if (aboutSection && aboutTypewriterElement) {
+            const aboutObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !aboutTypingDone) {
+                        typeAboutText();
+                    }
+                });
+            }, { threshold: 0.3 });
+            
+            aboutObserver.observe(aboutSection);
+        }
         
         // 粒子背景 - 性能优化
         const canvas = document.getElementById('particle-canvas');
@@ -1582,25 +1636,22 @@
         // 锚点链接平滑滚动
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
+                e.preventDefault();
                 const href = this.getAttribute('href');
                 
                 if (href === '#') {
-                    e.preventDefault();
-                    window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                     return;
                 }
                 
                 const target = document.querySelector(href);
                 if (target) {
-                    e.preventDefault();
-                    const navbarHeight = 80;
-                    const offsetTop = target.offsetTop - navbarHeight;
+                    const navbar = document.getElementById('navbar');
+                    const navbarHeight = navbar ? navbar.offsetHeight : 80;
+                    const targetPosition = target.offsetTop - navbarHeight;
                     
                     window.scrollTo({
-                        top: offsetTop,
+                        top: targetPosition,
                         behavior: 'smooth'
                     });
                     
